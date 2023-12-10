@@ -1,22 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ContactForm.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContactAction } from '../../redux/contacts';
+import { getContacts } from '../../redux/selectors';
 
-const ContactForm = ({ handleSubmit }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    number: '',
-  });
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
-  const handleInputChange = e => {
-    const { name, value } = e.target;
-    setFormData(prevData => ({ ...prevData, [name]: value }));
+  const addContact = newContact => {
+    const isExist = Array.isArray(contacts)
+      ? contacts.find(
+          contact =>
+            contact.name.toLowerCase() === newContact.name.toLowerCase().trim()
+        )
+      : null;
+
+    if (isExist) {
+      alert(`${newContact.name} is already in contacts`);
+      return;
+    }
+
+    dispatch(addContactAction(newContact));
   };
 
-  const handleFormSubmit = event => {
-    event.preventDefault();
-    const { name, number } = formData;
-    handleSubmit({ name, number });
-    setFormData({ name: '', number: '' });
+  const handleFormSubmit = e => {
+    e.preventDefault();
+
+    const formData = {
+      name: e.target.name.value,
+      number: e.target.number.value,
+    };
+    console.log('Form data:', formData);
+    addContact(formData);
+    e.target.reset();
   };
 
   return (
@@ -27,23 +44,11 @@ const ContactForm = ({ handleSubmit }) => {
           <label className="phonebook-name" htmlFor="name">
             Name
           </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-          />
+          <input type="text" name="name" required />
           <label className="phonebook-number" htmlFor="number">
             Number
           </label>
-          <input
-            type="text"
-            name="number"
-            value={formData.number}
-            onChange={handleInputChange}
-            required
-          />
+          <input type="text" name="number" required />
 
           <button type="submit" className="namebtn">
             Add contact
@@ -53,5 +58,4 @@ const ContactForm = ({ handleSubmit }) => {
     </div>
   );
 };
-
 export default ContactForm;
