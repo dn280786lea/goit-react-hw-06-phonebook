@@ -3,23 +3,22 @@ import { useDispatch } from 'react-redux';
 import './ContactItem.css';
 import { removeContactAction } from '../../redux/contacts';
 
-export const ContactItem = ({ contact }) => {
+export const ContactItem = ({ name, number, id }) => {
   const dispatch = useDispatch();
 
-  const deleteContact = e => {
-    const contactToDelete = e.currentTarget.id;
-    dispatch(removeContactAction(contactToDelete));
+  const deleteContact = id => {
+    dispatch(removeContactAction(id));
   };
-
-  if (!contact) {
-    return null;
-  }
 
   return (
     <div className="contact-item">
-      <span className="item">{contact.name}: </span>
-      <span className="item">{contact.number}</span>
-      <button className="deletebtn" type="button" onClick={deleteContact}>
+      <span className="item">{name}: </span>
+      <span className="item">{number}</span>
+      <button
+        className="deletebtn"
+        type="button"
+        onClick={() => deleteContact(id)}
+      >
         Delete
       </button>
     </div>
