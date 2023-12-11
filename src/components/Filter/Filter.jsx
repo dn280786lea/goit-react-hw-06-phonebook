@@ -1,10 +1,11 @@
-import React from 'react';
+import { nanoid } from 'nanoid';
 import './Filter.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStatusFilter } from '../../redux/filtersSlice';
 import { getFilter } from '../../redux/selectors';
 
-export const Filter = () => {
+const Filter = () => {
+  const filterId = nanoid();
   const dispatch = useDispatch();
   const filter = useSelector(getFilter);
 
@@ -14,7 +15,7 @@ export const Filter = () => {
 
   return (
     <div>
-      <label className="filter-contact" htmlFor="filter">
+      <label className="filter-contact" htmlFor={filterId}>
         Find contacts by name{' '}
       </label>
       <input
@@ -22,7 +23,9 @@ export const Filter = () => {
         value={filter}
         onChange={handleFilter}
         placeholder="Find contacts by name"
+        id={filterId}
       />
     </div>
   );
 };
+export default Filter;

@@ -1,4 +1,4 @@
-import { Filter } from './Filter/Filter';
+import Filter from './Filter/Filter';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import './App.css';
