@@ -11,7 +11,6 @@ export const ContactItem = ({ contact }) => {
     dispatch(removeContactAction(contactToDelete));
   };
 
-  // Check if contact is truthy before rendering
   if (!contact) {
     return null;
   }
